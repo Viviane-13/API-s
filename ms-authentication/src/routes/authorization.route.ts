@@ -1,3 +1,4 @@
+import { SignOptions } from './../../node_modules/@types/jsonwebtoken/index.d';
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response, NextFunction, Router } from "express";
 import ForbiddenError from "../models/errors/forbidden.error.model";
@@ -22,7 +23,7 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Req
       throw new ForbiddenError('Usuário não informado!');
     }
     const jwtPayload = { username: user.username };
-    const jwtOptions = { subject: user?.uuid }
+    const jwtOptions: SignOptions = { subject: user?.uuid, expiresIn: '15m' }
     const secretKey = 'my_secret_key'
 
     const jwt = JWT.sign(jwtPayload, secretKey, jwtOptions);
