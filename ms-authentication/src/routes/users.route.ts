@@ -1,10 +1,11 @@
 import { StatusCodes } from 'http-status-codes'
 import { Router, Request, Response, NextFunction } from "express";
 import userRepository from '../repositories/user.repository';
+import jwtAuthenticationMiddleware from '../middlewares/jwt-authentication.middleware';
 
 const usersRouter = Router();
 
-usersRouter.get('/users', async (req: Request, res: Response, next: NextFunction) => {
+usersRouter.get('/users', jwtAuthenticationMiddleware, async (req: Request, res: Response, next: NextFunction) => {
   const users = await userRepository.findAllUsers();
 
   res.status(StatusCodes.OK).send({ users });
